@@ -14,7 +14,6 @@
 @property (nonatomic, weak) UIViewController *presentingViewController;
 @property (nonatomic, weak) UIView *popoverView;
 @property (nonatomic, strong) UIPopoverController *popoverController;
-@property (nonatomic, strong) UIImagePickerController *imagePickerController;
 - (void)_hideController;
 @end
 
@@ -137,6 +136,18 @@
     }
 }
 
+- (UIImagePickerController *)imagePickerController
+{
+    if (_imagePickerController) {
+        return _imagePickerController;
+    }
+
+    _imagePickerController = [[UIImagePickerController alloc] init];
+    _imagePickerController.delegate = self;
+    _imagePickerController.allowsEditing = NO;
+    return _imagePickerController;
+}
+
 - (void)showCameraImagePicker {
 
 #if TARGET_IPHONE_SIMULATOR
@@ -146,10 +157,7 @@
     
 #elif TARGET_OS_IPHONE
     
-    self.imagePickerController = [[UIImagePickerController alloc] init];
     self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-    self.imagePickerController.delegate = self;
-    self.imagePickerController.allowsEditing = NO;
 
     [self presentImagePickerController];
 #endif
@@ -157,10 +165,7 @@
 }
 
 - (void)showGalleryImagePicker {
-    self.imagePickerController = [[UIImagePickerController alloc] init];
     self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    self.imagePickerController.delegate = self;
-    self.imagePickerController.allowsEditing = NO;
 
     [self presentImagePickerController];
 }
